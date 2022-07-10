@@ -1,0 +1,76 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find flock_rviz)/cfg/default.rviz" />
+  <node pkg="tf" type="static_transform_publisher" name="world" args="0 0 0 0 0 0 map world 100" /> 
+
+	<node name="orb_slam2_rgbd" pkg="orb_slam2_ros" type="orb_slam2_ros_rgbd" >
+        
+
+
+      <remap from="/camera/rgb/image_raw" to="/pseudoCamera/color" />
+      <remap from="/camera/depth_registered/image_raw" to="/pseudoCamera/depth" />
+      <param name="publish_pointcloud" type="bool" value="true" />
+      <param name="publish_pose" type="bool" value="true" />
+      <param name="localize_only" type="bool" value="false" />
+      <param name="reset_map" type="bool" value="false" />
+
+      <!-- static parameters -->
+      <param name="point_cloud_offset" type="double" value="0" />
+      <param name="initialization_pitch_degree" type="double" value="12" />
+      <param name="use_viewer" type="bool" value="true" />
+      <param name="load_map" type="bool" value="false" />
+      <param name="map_file" type="string" value="labaratory_rot.bin" />
+      <param name="settings_file" type="string" value="$(find orb_slam2_ros)/orb_slam2/config/TelloRGBD.yaml" />
+      <param name="voc_file" type="string" value="$(find orb_slam2_ros)/orb_slam2/Vocabulary/ORBvoc.txt" />
+
+      <param name="pointcloud_frame_id" type="string" value="map" />
+      <param name="camera_frame_id" type="string" value="camera_link" />
+      <param name="min_num_kf_in_map" type="int" value="15" />
+  </node>
+
+  <node name="cloud_map_saver" pkg="flock_driver" type="cloud_map_saver.py" >
+  <param name="OUT_FILE_PATH" type="string" value="/home/arkadiros/map_point.txt" />
+  <param name="CLOUD_TOPIC_NAME" type="string" value="/orb_slam2_rgbd/map_points" />
+  <param name="TRIGGER_TOPIC_NAME" type="string" value="/save_cloud_trigger" />
+  <param name="POSE_TOPIC_NAME" type="string" value="/orb_slam2_rgbd/pose" />
+  <param name="CAMERA_TOPIC_NAME" type="string" value="/orb_slam2_rgbd/debug_image" />
+
+  
+</node>
+
+
+ <node name="flock_driver_node" pkg="flock_driver" type="flock_driver.py" >
+    <param name="network_interface" type="string" value="" />
+    <param name="ID" type="string" value="" />
+
+ 
+
+    <!-- <param name="network_interface" type="string" value="" /> -->
+    <!-- <param name="TELLO_IP" type="string" value="192.168.43.98" /> -->
+
+    <!-- <remap from="tello0/camera/image_raw" to="rectify/image_mono" /> -->
+    <!-- <remap from="/rectify/image_mono" to="tello0/camera/image_mono" /> -->
+    <!-- <remap from="tello0/camera/image_raw" to="/image" /> -->
+
+ </node>
+<node name="tello_slam_control" pkg="flock_driver" type="tello_slam_control.py" output="screen">
+  <param name="~POSE_TOPIC_NAME" type="string" value="/orb_slam2_rgbd/pose" />
+  <param name="ID" type="string" value="" />
+</node>
+
+
+
+<node name="tello_ui" pkg="flock_driver" type="tello_ui.py" output="screen">
+  <param name="ID" type="string" value="" />
+  <param name="~POSE_TOPIC_NAME" type="string" value="/orb_slam2_rgbd/pose" />
+</node> 
+
+
+
+
+  <include file="$(find flock_driver)/launch/octoServer.launch" ns="path_planner"/>
+  <!--<node pkg="simple_path_planner" type = "simple_path_planner_node" name="path_planner" output="screen"> -->
+  <!--  <remap from="/clicked_point" to="/move_base_simple/goal" /> -->
+ <!-- </node> -->
+   <include file="$(find simple_path_planner)/launch/path_planner.launch" /> 
+<node name="joystick" pkg="joy" type="joy_node" output="screen" />
+</launch>

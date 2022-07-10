@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="simple_path_planner" type = "simple_path_planner_node" name="path_planner" output="screen">
+    <param name="bound_x" type="double" value="10" />
+    <param name="bound_y" type="double" value="10" />
+    <param name="bound_z" type="double" value="1" />
+  </node>
+</launch>
