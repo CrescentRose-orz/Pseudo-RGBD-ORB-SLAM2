@@ -1,0 +1,3 @@
+/home/crescentrose/anaconda3/envs/sfm/bin
+catkin config -DPYTHON_EXECUTABLE=/home/crescentrose/anaconda3/envs/sfm/bin/python3 -DPYTHON_INCLUDE_DIR=/home/crescentrose/anaconda3/envs/sfm/include/python3.8
+-DPYTHON_LIBRARY=/home/crescentrose/anaconda3/envs/sfm/lib/libpython3.so
