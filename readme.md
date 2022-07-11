@@ -54,7 +54,7 @@ echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-###　安装常用的命令行工具
+### 安装常用的命令行工具
 安装rosinstall
 运行：
 ``` 
@@ -192,7 +192,6 @@ sudo make install
 ```
 
 # 安装本仓库的orbslam2节点及路径规划节点
-
 ## 安装TelloPy 
 TelloPy由tau-adl于源仓库修改： https://github.com/dji-sdk/Tello-Python and https://github.com/hanyazou/TelloPy
 ```
@@ -226,7 +225,7 @@ source ~/.bashrc
 https://github.com/raulmur/ORB_SLAM2
 # 安装本仓库的pseudo-camera
 基于https://github.com/JiawangBian/SC-SfMLearner-Release
-##　创建python3下的ROS环境
+## 创建python3下的ROS环境
 推荐创建虚拟环境
 ### 安装相关依赖
 ```
